@@ -8,7 +8,7 @@ class ModifyRtoScan
     public:
         ModifyRtoScan(ros::NodeHandle& nh) : nh_(nh)
         {
-            ROS_INFO_STREAM_NAMED("Timing", "Creating ModifyRtoScan object");
+            // ROS_INFO_STREAM_NAMED("Timing", "Creating ModifyRtoScan object");
 
             // Subscribe to the laser scan topic
             scan_sub_ = nh_.subscribe("/rto/scan", 10, &ModifyRtoScan::scanCallback, this);
@@ -19,7 +19,7 @@ class ModifyRtoScan
 
         void scanCallback(const sensor_msgs::LaserScan::ConstPtr& scan)
         {
-            ROS_INFO_STREAM_NAMED("Timing", "Received laser scan message");
+            // ROS_INFO_STREAM_NAMED("Timing", "Received laser scan message");
             float range_max = 5.0;
 
             // Create a new LaserScan message
@@ -37,13 +37,13 @@ class ModifyRtoScan
             float eps = 0.01; // epsilon value to avoid infinities
             for (size_t i = 0; i < modified_scan.ranges.size(); ++i)
             {
-                ROS_INFO_STREAM_NAMED("Timing", "Modifying range at index " << i << ": " << modified_scan.ranges[i]);
+                // ROS_INFO_STREAM_NAMED("Timing", "Modifying range at index " << i << ": " << modified_scan.ranges[i]);
 
                 modified_scan.ranges[i] = std::min(modified_scan.ranges[i], range_max - eps); // remove any infinities in scan
 
                 if (std::isnan(modified_scan.ranges[i]))
                 {
-                    ROS_INFO_STREAM_NAMED("Timing", "Range is NaN, setting to max range");
+                    // ROS_INFO_STREAM_NAMED("Timing", "Range is NaN, setting to max range");
                     modified_scan.ranges[i] = range_max - eps;
                 } else if (std::isinf(modified_scan.ranges[i]))
                 {
